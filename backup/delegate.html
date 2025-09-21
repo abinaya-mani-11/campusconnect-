@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delegate Resident Booking</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #4facfe, #43e97b);
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 700px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input, select, textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 50px;
+    }
+
+    button {
+      grid-column: 1 / -1;
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    .message {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Book Delegate Resident</h2>
+    <form id="delegateForm">
+      <div class="form-group">
+        <label for="date">Date *</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="checkin">Check-in Time *</label>
+        <input type="time" id="checkin" name="checkin" required>
+      </div>
+
+      <div class="form-group">
+        <label for="checkout">Check-out Time *</label>
+        <input type="time" id="checkout" name="checkout" required>
+      </div>
+
+      <div class="form-group">
+        <label for="delegates">Number of Delegates/Guests</label>
+        <input type="number" id="delegates" name="delegates" min="1" placeholder="Enter number">
+      </div>
+
+      <div class="form-group">
+        <label for="rooms">Number of Rooms Required</label>
+        <input type="number" id="rooms" name="rooms" min="1" placeholder="Enter number">
+      </div>
+
+      <div class="form-group">
+        <label for="refreshments">Need Refreshments?</label>
+        <select id="refreshments" name="refreshments">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="grid-column: 1 / -1;">
+        <label for="requests">Special Requests</label>
+        <textarea id="requests" name="requests" placeholder="Enter any special requirements..."></textarea>
+      </div>
+
+      <button type="submit">Book Delegate Resident</button>
+      <div id="message" class="message"></div>
+    </form>
+  </div>
+
+  <script>
+    const bookedSlots = [
+      { date: "2025-09-07", checkin: "09:00", checkout: "11:00" }
+    ];
+
+    document.getElementById("delegateForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const date = document.getElementById("date").value;
+      const checkin = document.getElementById("checkin").value;
+      const checkout = document.getElementById("checkout").value;
+      const messageDiv = document.getElementById("message");
+
+      const conflict = bookedSlots.some(slot =>
+        slot.date === date &&
+        ((checkin >= slot.checkin && checkin < slot.checkout) || (checkout > slot.checkin && checkout <= slot.checkout))
+      );
+
+      if (conflict) {
+        messageDiv.textContent = "❌ Delegate Resident is already booked for this time slot.";
+        messageDiv.className = "message error";
+      } else {
+        messageDiv.textContent = "✅ Delegate Resident booked successfully!";
+        messageDiv.className = "message success";
+
+        console.log({
+          date, checkin, checkout,
+          delegates: document.getElementById("delegates").value,
+          rooms: document.getElementById("rooms").value,
+          refreshments: document.getElementById("refreshments").value,
+          requests: document.getElementById("requests").value
+        });
+      }
+    });
+  </script>
+</body>
+</html>

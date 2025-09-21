@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - NEC Hall Booking</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <nav class="main-nav">
+      <div class="nav-container">
+        <div class="nav-brand">NEC Booking</div>
+        <div class="nav-links">
+          <a href="dashboard.html" class="nav-link active">Dashboard</a>
+          <a href="halls.html" class="nav-link">Halls</a>
+          <a href="dashboard.html#bookings" class="nav-link">My Bookings</a>
+          <button class="nav-link logout-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <div class="dashboard-container">
+        <div class="welcome-section">
+          <h1>Welcome to NEC Hall Booking System</h1>
+          <p>Manage your hall reservations efficiently</p>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="card user-info-card">
+            <div class="card-header">
+              <h2>User Information</h2>
+            </div>
+            <div class="card-body" id="userInfo">
+              <!-- User info will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <div class="card quick-actions-card">
+            <div class="card-header">
+              <h2>Quick Actions</h2>
+            </div>
+            <div class="card-body">
+              <a href="halls.html" class="btn-primary">Book a Hall</a>
+              <button onclick="scrollToBookings()" class="btn-secondary">View My Bookings</button>
+            </div>
+          </div>
+        </div>
+
+        <section id="bookings" class="bookings-section">
+          <h2>My Bookings</h2>
+          <div id="bookingsList" class="bookings-list">
+            <!-- Bookings will be populated by JavaScript -->
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+      requireLogin();
+      renderUserInfo();
+      renderBookings();
+
+      function scrollToBookings() {
+        document.getElementById('bookings').scrollIntoView({ behavior: 'smooth' });
+      }
+    </script>
+  </body>
+</html>

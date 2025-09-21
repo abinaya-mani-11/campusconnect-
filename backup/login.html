@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - NEC Hall Booking</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #4facfe, #43e97b);
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    .login-box h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      color: #1e3a8a;
+    }
+
+    .login-box p {
+      margin: 0 0 20px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .error-message {
+      font-size: 13px;
+      color: red;
+      margin-top: 5px;
+      min-height: 16px;
+    }
+
+    button {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>CAMPUS CONNECT</h2>
+    <p>Faculty Portal</p>
+
+    <form id="loginForm" action="login.php" method="post">
+      <div class="form-group">
+        <label for="email">Email ID*</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required 
+          placeholder="your.id@nec.edu.in">
+        <div id="emailError" class="error-message"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password*</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          required 
+          placeholder="Enter your password">
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+  const form = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const emailError = document.getElementById('emailError');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // stop form from reloading page
+
+    const emailValue = emailInput.value.trim();
+    const regex = /^[a-zA-Z0-9._%+-]+@nec\.edu\.in$/;
+
+    if (!regex.test(emailValue)) {
+      emailError.textContent = "Please enter a valid NEC email (@nec.edu.in)";
+    } else {
+      emailError.textContent = "";
+      // ✅ Redirect to faculty details page
+      window.location.href = "faculty_details.html";
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEC Hall Booking System</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Redirecting...</p>
+    </div>
+    <script src="app.js"></script>
+    <script>
+      // Redirect based on authentication status
+      const user = getUser();
+      if (user && user.email && user.role === 'Faculty') {
+        window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    </script>
+  </body>
+</html>
