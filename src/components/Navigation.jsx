@@ -1,20 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    navigate('/login');
-  };
-
-  return (
-    <nav className="navigation">
-      <button onClick={handleLogout} className="logout-button">
-        Logout
-      </button>
-    </nav>
-  );
+  // Navigation intentionally renders nothing — logout is handled in dashboards
+  return null;
 };
 
 export default Navigation;

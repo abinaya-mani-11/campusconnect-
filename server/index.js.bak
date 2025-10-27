@@ -1,0 +1,34 @@
+import express from 'express';app.get('/auth/google/callback',
+    passport.authenticate('google', {
+        failureRedirect: 'http://localhost:5173/login',
+        session: true
+    }),
+    (req, res) => {
+        if (req.user) {
+            // Store user data in session
+            req.session.user = {
+                id: req.user.googleId,
+                email: req.user.email,
+                name: req.user.name,
+                picture: req.user.picture
+            };
+            
+            // Construct the URL with user data
+            const userDataParam = encodeURIComponent(JSON.stringify({
+                id: req.user.googleId,
+                email: req.user.email,
+                name: req.user.name,
+                picture: req.user.picture
+            }));
+            
+            // Redirect to dashboard with user data
+            res.redirect(`http://localhost:5173/dashboard?userData=${userDataParam}`);
+        } else {
+            res.redirect('http://localhost:5173/login');
+        }
+    });cors from 'cors';
+import { MongoClient } from 'mongodb';
+import passport from 'passport';
+import session from 'express-session';
+import dotenv from 'dotenv';
+import './config/passport.js';
