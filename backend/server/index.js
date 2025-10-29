@@ -125,27 +125,30 @@ app.post('/auth/logout', (req, res) => {
     });
 });
 
-// MongoDB connection
-const uri = "mongodb+srv://Abinaya_M:abi2006@campusconnectcluster.ifapgvg.mongodb.net/";
-const client = new MongoClient(uri);
+// MongoDB connection - cached for serverless
 let db;
+let client;
 
-// Connect to MongoDB
-async function connectDB() {
+async function getDB() {
+    if (db) return db;
+
     try {
+        const uri = "mongodb+srv://Abinaya_M:abi2006@campusconnectcluster.ifapgvg.mongodb.net/";
+        client = new MongoClient(uri);
         await client.connect();
         console.log("✅ Connected to MongoDB!");
         db = client.db("campusConnect");
-        return true;
+        return db;
     } catch (error) {
         console.error("❌ MongoDB Connection error:", error);
-        return false;
+        throw error;
     }
 }
 
 // Faculty Registration endpoint
 app.post('/api/faculty/register', async (req, res) => {
     try {
+        const db = await getDB();
         const facultyData = req.body;
         const faculty = db.collection("faculty");
 
@@ -177,6 +180,7 @@ app.post('/api/faculty/register', async (req, res) => {
 // Room Booking endpoint
 app.post('/api/bookings/create', async (req, res) => {
     try {
+        const db = await getDB();
         const bookingData = req.body;
         const bookings = db.collection("bookings");
 
@@ -222,6 +226,7 @@ app.get('/api/bookings/check-availability', async (req, res) => {
             return res.status(400).json({ error: 'Missing required parameters' });
         }
 
+        const db = await getDB();
         const bookings = db.collection("bookings");
         const overlapping = await bookings.findOne({
             roomType,
@@ -245,6 +250,7 @@ app.get('/api/bookings/check-availability', async (req, res) => {
 // Get all bookings for admin
 app.get('/api/bookings/admin/all', async (req, res) => {
     try {
+        const db = await getDB();
         const bookings = db.collection("bookings");
         const allBookings = await bookings.find({}).sort({ createdAt: -1 }).toArray();
         res.json(allBookings);
@@ -257,6 +263,7 @@ app.get('/api/bookings/admin/all', async (req, res) => {
 // Update booking status for admin
 app.put('/api/bookings/admin/:id/status', async (req, res) => {
     try {
+        const db = await getDB();
         const { status, admin_notes } = req.body;
         const bookings = db.collection("bookings");
         const result = await bookings.updateOne(
@@ -277,6 +284,7 @@ app.put('/api/bookings/admin/:id/status', async (req, res) => {
 // Get faculty's bookings
 app.get('/api/bookings/faculty/:email', async (req, res) => {
     try {
+        const db = await getDB();
         const bookings = db.collection("bookings");
         const facultyBookings = await bookings
             .find({
@@ -296,6 +304,7 @@ app.get('/api/bookings/faculty/:email', async (req, res) => {
 // Get authenticated user's bookings
 app.get('/api/bookings/user', authenticateToken, async (req, res) => {
     try {
+        const db = await getDB();
         const bookings = db.collection("bookings");
         const userBookings = await bookings
             .find({
@@ -315,6 +324,7 @@ app.get('/api/bookings/user', authenticateToken, async (req, res) => {
 // Cancel a booking
 app.put('/api/bookings/:id/cancel', authenticateToken, async (req, res) => {
     try {
+        const db = await getDB();
         const bookingId = req.params.id;
         const bookings = db.collection("bookings");
 
@@ -356,6 +366,7 @@ app.put('/api/bookings/:id/cancel', authenticateToken, async (req, res) => {
 // Rollback a cancelled booking (admin only)
 app.put('/api/bookings/:id/rollback', authenticateToken, async (req, res) => {
     try {
+        const db = await getDB();
         const bookingId = req.params.id;
         const bookings = db.collection("bookings");
 
@@ -391,16 +402,22 @@ app.put('/api/bookings/:id/rollback', authenticateToken, async (req, res) => {
     }
 });
 
-// Start server after connecting to MongoDB
-async function startServer() {
-    const isConnected = await connectDB();
-    if (isConnected) {
-        app.listen(port, () => {
-            console.log(`Server running at http://localhost:${port}`);
-        });
-    } else {
-        console.error("Failed to start server due to database connection error");
-    }
-}
+// Export the app for Vercel serverless functions
+export default app;
 
-startServer();
+// For local development, you can still run the server
+if (process.env.NODE_ENV !== 'production') {
+    // Start server after connecting to MongoDB
+    async function startServer() {
+        try {
+            await getDB();
+            app.listen(port, () => {
+                console.log(`Server running at http://localhost:${port}`);
+            });
+        } catch (error) {
+            console.error("Failed to start server due to database connection error", error);
+        }
+    }
+
+    startServer();
+}
