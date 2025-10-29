@@ -31,12 +31,12 @@ app.get('/auth/google',
 );
 
 app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: process.env.FRONTEND_URL + '/login' || 'http://localhost:5173/login', session: true }),
+    passport.authenticate('google', { failureRedirect: (process.env.FRONTEND_URL || 'http://localhost:5173') + '/login', session: true }),
     (req, res) => {
         if (req.user) {
             // Restrict to nec.edu.in emails
             if (!req.user.email.endsWith('@nec.edu.in')) {
-                return res.redirect(process.env.FRONTEND_URL + '/login?error=invalid-email' || 'http://localhost:5173/login?error=invalid-email');
+                return res.redirect((process.env.FRONTEND_URL || 'http://localhost:5173') + '/login?error=invalid-email');
             }
 
             // Generate JWT token for Google OAuth users
@@ -60,7 +60,7 @@ app.get('/auth/google/callback',
 
             res.redirect((process.env.FRONTEND_URL || 'http://localhost:5173') + `/faculty-registration?userData=${userDataParam}&token=${token}`);
         } else {
-            res.redirect(process.env.FRONTEND_URL + '/login' || 'http://localhost:5173/login');
+            res.redirect((process.env.FRONTEND_URL || 'http://localhost:5173') + '/login');
         }
     }
 );
