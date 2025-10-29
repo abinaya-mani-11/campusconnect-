@@ -51,7 +51,7 @@ const FacultyRegistration = () => {
         // fetch profile
         (async () => {
           try {
-            const resp = await fetch('http://localhost:5000/api/auth/profile', {
+            const resp = await fetch('/api/auth/profile', {
               headers: { Authorization: `Bearer ${tokenParam}` }
             });
             if (resp.ok) {
@@ -128,7 +128,7 @@ const FacultyRegistration = () => {
 
   // prefer accessToken, fall back to legacy jwtToken
   const token = sessionStorage.getItem('accessToken') || sessionStorage.getItem("jwtToken") || localStorage.getItem('jwtToken');
-      const response = await fetch("http://localhost:5000/api/faculty/register", {
+      const response = await fetch("/api/faculty/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

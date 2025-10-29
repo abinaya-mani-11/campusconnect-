@@ -1,10 +1,17 @@
-# TODO: Rearrange Project Structure into Frontend and Backend
+# Fix Vercel Deployment 404 Issues
 
-- [x] Create `frontend/` directory
-- [x] Move frontend-related files to `frontend/`: `src/`, `public/`, `index.html`, `vite.config.js`, `package.json`, `package-lock.json`, `eslint.config.js`, `vercel.json`, `node_modules/`, `dist/`
-- [x] Create `backend/` directory
-- [x] Move `server/` folder to `backend/`
-- [x] Move `.env.example` to `backend/`
-- [x] Update any relative paths in configuration files (e.g., scripts in `package.json`, `vercel.json`)
-- [x] Verify the new folder structure
-- [x] Test frontend and backend builds/scripts to ensure functionality
+## Problem
+Frontend has hardcoded `http://localhost:5000` URLs that work in development but fail in production on Vercel.
+
+## Solution
+Replace all hardcoded localhost URLs with relative paths that work with Vercel's routing.
+
+## Tasks
+- [ ] Update fetchWithAuth.js API_REFRESH_URL to use '/api/auth/refresh-token'
+- [ ] Update Login.jsx to use relative paths
+- [ ] Update FacultyRegistration.jsx to use relative paths
+- [ ] Update Dashboard.jsx to use relative paths
+- [ ] Update BookingForm.jsx to use relative paths
+- [ ] Update AdminDashboard.jsx to use relative paths
+- [ ] Update ProtectedRoute.jsx to use relative paths
+- [ ] Test deployment after changes

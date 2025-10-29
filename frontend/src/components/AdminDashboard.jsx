@@ -39,7 +39,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     let es;
     try {
-      es = new EventSource('http://localhost:5000/events/bookings');
+      es = new EventSource('/events/bookings');
       es.onmessage = (ev) => {
         try {
           const payload = JSON.parse(ev.data);
@@ -88,10 +88,10 @@ const AdminDashboard = () => {
   // prefer accessToken, fall back to legacy jwtToken in session/local
   const token = localStorage.getItem('accessToken') || sessionStorage.getItem('jwtToken') || localStorage.getItem('jwtToken');
       // Try admin-specific route first (some server variants use /api/bookings/admin/all)
-      let res = await fetch('http://localhost:5000/api/bookings/admin/all', { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+      let res = await fetch('/api/bookings/admin/all', { headers: token ? { Authorization: `Bearer ${token}` } : {} });
       if (!res.ok) {
         // fallback to generic all route used by enhanced server
-        res = await fetch('http://localhost:5000/api/bookings/all', { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+        res = await fetch('/api/bookings/all', { headers: token ? { Authorization: `Bearer ${token}` } : {} });
       }
 
       if (!res.ok) {
@@ -121,7 +121,7 @@ const AdminDashboard = () => {
     try {
   const token = localStorage.getItem('accessToken') || sessionStorage.getItem('jwtToken') || localStorage.getItem('jwtToken');
       // Try admin-specific update route first, fallback to generic status update route
-      let res = await fetch(`http://localhost:5000/api/bookings/admin/${bookingId}/status`, {
+      let res = await fetch(`/api/bookings/admin/${bookingId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
       });
 
       if (!res.ok) {
-        res = await fetch(`http://localhost:5000/api/bookings/${bookingId}/status`, {
+        res = await fetch(`/api/bookings/${bookingId}/status`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

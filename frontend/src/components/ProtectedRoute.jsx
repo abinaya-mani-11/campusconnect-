@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }) => {
     const validateSession = async () => {
       try {
         // Validate session by calling a protected endpoint; fetchWithAuth will attempt refresh if needed
-        const resp = await fetchWithAuth('http://localhost:5000/api/auth/profile', { method: 'GET' });
+        const resp = await fetchWithAuth('/api/auth/profile', { method: 'GET' });
         if (!resp.ok) {
           throw new Error('Session invalid');
         }

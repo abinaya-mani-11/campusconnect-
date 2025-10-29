@@ -26,7 +26,7 @@ const Login = () => {
   }, [location.search]);
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5000/auth/google';
+    window.location.href = '/auth/google';
   };
 
   // ---------------- User Login ----------------
@@ -43,7 +43,7 @@ const Login = () => {
       }
 
   // Server uses /auth/login in the development server (index.js)
-  const response = await fetch('http://localhost:5000/auth/login', {
+  const response = await fetch('/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

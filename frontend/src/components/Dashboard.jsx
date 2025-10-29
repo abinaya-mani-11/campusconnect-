@@ -163,7 +163,7 @@ const BookingModal = ({ isOpen, onClose, bookings, venueId, venueDisplayName, on
                                   }
 
                                   console.log('Cancelling booking id:', bookingId);
-                                  const res = await fetch(`http://localhost:5000/api/bookings/${encodeURIComponent(bookingId)}/cancel`, {
+                                  const res = await fetch(`/api/bookings/${encodeURIComponent(bookingId)}/cancel`, {
                                     method: 'PUT',
                                     headers: {
                                       'Content-Type': 'application/json',
@@ -234,7 +234,7 @@ const Dashboard = () => {
     // Verify token and fetch faculty data if needed
     const fetchFacultyData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/faculty/profile', {
+        const response = await fetch('/api/faculty/profile', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -246,7 +246,7 @@ const Dashboard = () => {
             const refreshToken = localStorage.getItem('refreshToken');
             if (refreshToken) {
               try {
-                const refreshResponse = await fetch('http://localhost:5000/api/auth/refresh-token', {
+                const refreshResponse = await fetch('/api/auth/refresh-token', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -267,7 +267,7 @@ const Dashboard = () => {
                   localStorage.setItem('tokenExpiry', new Date(Date.now() + 24*60*60*1000).toISOString());
 
                   // Retry the original request with new token
-                  const retryResponse = await fetch('http://localhost:5000/api/faculty/profile', {
+                  const retryResponse = await fetch('/api/faculty/profile', {
                     headers: {
                       Authorization: `Bearer ${refreshData.accessToken}`
                     }
@@ -335,11 +335,11 @@ const Dashboard = () => {
       const fetchWithAuth = (await import('../utils/fetchWithAuth')).default;
 
       // Try the newer endpoint first; fetchWithAuth will refresh tokens automatically when needed
-      let response = await fetchWithAuth(`http://localhost:5000/api/bookings/user`, { method: 'GET' });
+      let response = await fetchWithAuth(`/api/bookings/user`, { method: 'GET' });
 
       // fallback to legacy endpoint if the newer one returns 404
       if (response.status === 404) {
-        response = await fetchWithAuth(`http://localhost:5000/api/bookings/faculty/${encodeURIComponent(facultyData.email)}`, { method: 'GET' });
+        response = await fetchWithAuth(`/api/bookings/faculty/${encodeURIComponent(facultyData.email)}`, { method: 'GET' });
       }
 
       if (!response.ok) {

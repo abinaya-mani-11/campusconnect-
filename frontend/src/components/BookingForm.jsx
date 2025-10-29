@@ -91,7 +91,7 @@ const BookingForm = () => {
       // Real-time availability check for non-delegate rooms
       if (roomType !== 'delegate' && newFormData.date && newFormData.startTime && newFormData.endTime) {
         try {
-          const response = await fetch(`http://localhost:5000/api/bookings/check-availability?roomType=${roomType}&date=${newFormData.date}&startTime=${newFormData.startTime}&endTime=${newFormData.endTime}`);
+          const response = await fetch(`/api/bookings/check-availability?roomType=${roomType}&date=${newFormData.date}&startTime=${newFormData.startTime}&endTime=${newFormData.endTime}`);
           if (!response.ok) {
             throw new Error('Failed to check availability');
           }
@@ -212,7 +212,7 @@ const BookingForm = () => {
         }
       }
 
-      const response = await fetch('http://localhost:5000/api/bookings/create', {
+      const response = await fetch('/api/bookings/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

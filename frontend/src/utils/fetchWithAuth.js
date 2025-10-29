@@ -2,7 +2,7 @@
 // Usage: import fetchWithAuth from '../utils/fetchWithAuth';
 // const res = await fetchWithAuth(url, { method: 'GET' });
 
-const API_REFRESH_URL = 'http://localhost:5000/api/auth/refresh-token';
+const API_REFRESH_URL = '/api/auth/refresh-token';
 
 async function refreshTokens() {
   const refreshToken = localStorage.getItem('refreshToken');
