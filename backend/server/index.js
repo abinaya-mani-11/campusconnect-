@@ -402,7 +402,7 @@ app.put('/api/bookings/:id/rollback', authenticateToken, async (req, res) => {
     }
 });
 
-// Export the app for Vercel serverless functions
+// For Vercel serverless functions, export the app as a function
 export default app;
 
 // For local development, you can still run the server
