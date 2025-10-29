@@ -10,13 +10,13 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 // Google OAuth callback
 router.get("/google/callback",
-  passport.authenticate("google", { failureRedirect: "http://localhost:5173/login", session: false }),
+  passport.authenticate("google", { failureRedirect: "/login", session: false }),
   (req, res) => {
     if (req.user) {
       const token = generateToken(req.user);
-      res.redirect(`http://localhost:5173/FacultyRegistration?token=${token}`);
+      res.redirect(`/FacultyRegistration?token=${token}`);
     } else {
-      res.redirect("http://localhost:5173/login");
+      res.redirect("/login");
     }
   }
 );

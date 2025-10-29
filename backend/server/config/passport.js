@@ -19,7 +19,7 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET, // This should be set in environment variables
-    callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/auth/google/callback',
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || '/auth/google/callback',
     scope: ['profile', 'email']
 }, async (accessToken, refreshToken, profile, done) => {
     try {
