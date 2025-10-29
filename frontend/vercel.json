@@ -12,5 +12,10 @@
     { "src": "/auth/(.*)", "dest": "../backend/server/index.js" },
     { "src": "/api/(.*)", "dest": "../backend/server/index.js" },
     { "src": "/(.*)", "dest": "/$1" }
-  ]
+  ],
+  "functions": {
+    "../backend/server/index.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
